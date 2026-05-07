@@ -6,7 +6,7 @@ export class AuthService {
     name: string,
     email: string,
     password: string,
-    role: 'admin' | 'manager' | 'user'
+    role: 'user',
   ) {
     const userExists =
       await User.query().findOne({
