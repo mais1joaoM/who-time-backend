@@ -21,7 +21,7 @@ export async function authMiddleware(ctx: Context, next: Next){
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as AuthUser;
-        (ctx as any).user = decoded;
+        (ctx.state as any).user = decoded;
         await next();
     } catch {
         ctx.status = 401;
