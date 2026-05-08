@@ -5,6 +5,7 @@ import { authMiddleware } from "../middlewares/auth.mddleware";
 import { authorize } from "../middlewares/role.middleware";
 import { CompanyController } from "../controllers/company.controller";
 import { ContractController } from "../controllers/contract.controller";
+import { TimeEntryController } from "../controllers/timeentry.controller";
 
 const router = new Router();
 
@@ -20,5 +21,10 @@ router.post('/companies', authMiddleware, authorize(['admin', 'manager']), Compa
 router.post('/contracts', authMiddleware, authorize(['admin', 'manager']), ContractController.create);
 router.get('/contracts', authMiddleware, authorize(['admin', 'manager']), ContractController.findAll);
 router.get('/contracts/:id', authMiddleware, authorize(['admin', 'manager']), ContractController.findById);
+
+
+router.post('/time-entries', authMiddleware, authorize(['admin', 'manager', 'user']), TimeEntryController.create);
+router.get('/time-entries', authMiddleware, authorize(['admin', 'manager', 'user']), TimeEntryController.findAll);
+router.get('/time-entries/:id', authMiddleware, authorize(['admin', 'manager', 'user']), TimeEntryController.findById);
 
 export default router;
