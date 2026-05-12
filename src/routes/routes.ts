@@ -6,6 +6,7 @@ import { authorize } from "../middlewares/role.middleware";
 import { CompanyController } from "../controllers/company.controller";
 import { ContractController } from "../controllers/contract.controller";
 import { TimeEntryController } from "../controllers/timeentry.controller";
+import { CompanyContractController } from "../controllers/companyContract.controller";
 
 const router = new Router();
 
@@ -17,6 +18,7 @@ router.get('/admin', authMiddleware, authorize(['admin']), async (ctx) => {
 });
 
 router.post('/companies', authMiddleware, authorize(['admin', 'manager']), CompanyController.register);
+router.post('/companies/:id', authMiddleware, authorize(['admin', 'manager']), CompanyController.delete);
 
 router.post('/contracts', authMiddleware, authorize(['admin', 'manager']), ContractController.create);
 router.get('/contracts', authMiddleware, authorize(['admin', 'manager']), ContractController.findAll);
@@ -26,5 +28,7 @@ router.get('/contracts/:id', authMiddleware, authorize(['admin', 'manager']), Co
 router.post('/time-entries', authMiddleware, authorize(['admin', 'manager', 'user']), TimeEntryController.create);
 router.get('/time-entries', authMiddleware, authorize(['admin', 'manager', 'user']), TimeEntryController.findAll);
 router.get('/time-entries/:id', authMiddleware, authorize(['admin', 'manager', 'user']), TimeEntryController.findById);
+
+router.get('/company-contracts', authMiddleware, authorize(['admin', 'manager', 'user']),CompanyContractController.getCompaniesWithContracts);
 
 export default router;

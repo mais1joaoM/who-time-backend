@@ -1,3 +1,4 @@
+import { error } from "node:console";
 import { Company } from "../models/Company";
 
 export class CompanyService {
@@ -23,4 +24,17 @@ export class CompanyService {
 
             return company
         }
+
+    
+    static async delete(id: number){
+        const companyExists = await Company.query().findById(id)
+
+        if (!companyExists){
+            throw new Error('Empresa não encontrada.')
+        }
+
+        await Company.query().where('id', id).delete()
+
+        return { message: 'Empresa deletada com sucesso.' }
+    }
 }
