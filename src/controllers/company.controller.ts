@@ -25,4 +25,18 @@ export class CompanyController {
             }
         }
     }
+
+    static async delete(ctx: Context) {
+        const { id } = ctx.params;
+        const company = await CompanyService.delete(Number(id));
+
+        if (!company){
+            ctx.status = 404;
+            ctx.body = {
+                message: 'Empresa não encontrada.'
+            }
+        }
+
+        ctx.body = company;
+    }
 }

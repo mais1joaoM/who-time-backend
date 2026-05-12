@@ -9,6 +9,7 @@ export class TimeEntry extends Model {
     hours!: number;
     description?: string;
     status!: 'pending' | 'approved' | 'rejected';
+    created_at?: string;
 
     static tableName = 'time_entries';
 }

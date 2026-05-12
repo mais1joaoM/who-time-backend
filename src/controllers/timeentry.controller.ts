@@ -2,30 +2,41 @@ import { Context } from "koa";
 import { TimeEntryService } from "../services/timeentry.service";
 
 export class TimeEntryController {
-    static async create(ctx: Context){
+    static async create(ctx: Context) {
         try {
+
+            const user =
+            (ctx.state as any).user
+
             const {
-                user_id,
-                company_id,
-                contract_id,
-                work_date,
-                hours,
-                description,
+            company_id,
+            contract_id,
+            work_date,
+            hours,
+            description,
             } = ctx.request.body as any
 
-            const timeEntry = await TimeEntryService.create(
-                user_id,
+            const timeEntry =
+            await TimeEntryService.create(
+                user.id,
                 company_id,
                 contract_id,
                 work_date,
                 hours,
-                description,
-            );
-            ctx.status = 201;
-            ctx.body = timeEntry;
+                description
+            )
+
+            ctx.status = 201
+
+            ctx.body = timeEntry
+
         } catch (error: any) {
-            ctx.status = 500;
-            ctx.body = { message: error.message };
+
+            ctx.status = 500
+
+            ctx.body = {
+            message: error.message
+            }
         }
     }
 

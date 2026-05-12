@@ -1,5 +1,6 @@
 import { Company } from "../models/Company";
 import { Contract } from "../models/Contract";
+import { CompanyContract } from "../models/CompanyContract";
 
 export class ContractService {
     static async create(
@@ -21,6 +22,11 @@ export class ContractService {
             start_date,
             end_date,
             hours_limit,
+        });
+
+        const companyContract = await CompanyContract.query().insert({
+            company_id: company_id,
+            contract_id: contract.id
         })
 
         return contract;
