@@ -58,4 +58,51 @@ export class TimeEntryController {
         }
         ctx.body = timeEntry;
     }
+
+    static async update(ctx: Context) {
+
+        try {
+
+            const { id } = ctx.params;
+
+            const updated =
+                await TimeEntryService.update(
+                    Number(id),
+                    ctx.request.body as any
+                );
+
+            ctx.body = updated;
+
+        } catch (error: any) {
+
+            ctx.status = 400;
+
+            ctx.body = {
+                message: error.message
+            };
+        }
+    }
+
+    static async delete(ctx: Context) {
+
+        try {
+
+            const { id } = ctx.params;
+
+            const result =
+                await TimeEntryService.delete(
+                    Number(id)
+                );
+
+            ctx.body = result;
+
+        } catch (error: any) {
+
+            ctx.status = 400;
+
+            ctx.body = {
+                message: error.message
+            };
+        }
+    }
 }

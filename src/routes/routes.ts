@@ -23,11 +23,15 @@ router.post('/companies/:id', authMiddleware, authorize(['admin', 'manager']), C
 router.post('/contracts', authMiddleware, authorize(['admin', 'manager']), ContractController.create);
 router.get('/contracts', authMiddleware, authorize(['admin', 'manager']), ContractController.findAll);
 router.get('/contracts/:id', authMiddleware, authorize(['admin', 'manager']), ContractController.findById);
+router.get('/contracts/:id/history', authMiddleware, authorize(['admin', 'manager', 'user']), ContractController.history);
 
 
 router.post('/time-entries', authMiddleware, authorize(['admin', 'manager', 'user']), TimeEntryController.create);
 router.get('/time-entries', authMiddleware, authorize(['admin', 'manager', 'user']), TimeEntryController.findAll);
 router.get('/time-entries/:id', authMiddleware, authorize(['admin', 'manager', 'user']), TimeEntryController.findById);
+router.put('/time-entries/:id', authMiddleware, authorize(['admin', 'manager', 'user']), TimeEntryController.update);
+router.delete('/time-entries/:id', authMiddleware, authorize(['admin', 'manager', 'user']), TimeEntryController.delete);
+
 
 router.get('/company-contracts', authMiddleware, authorize(['admin', 'manager', 'user']),CompanyContractController.getCompaniesWithContracts);
 
