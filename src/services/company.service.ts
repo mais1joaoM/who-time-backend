@@ -1,5 +1,5 @@
-import { error } from "node:console";
 import { Company } from "../models/Company";
+import { UserCompany } from "../models/UserCompany";
 
 export class CompanyService {
     static async register(
@@ -9,32 +9,81 @@ export class CompanyService {
         const companyExists =
             await Company.query().findOne({
                 cnpj,
-            })
+            });
 
-            if (companyExists) {
-                throw new Error(
-                    'Empresa já existe'
-                )
-            }
-
-            const company = await Company.query().insert({
-                name,
-                cnpj,
-            })
-
-            return company
+        if (companyExists) {
+            throw new Error(
+                "Empresa já existe"
+            );
         }
 
-    
-    static async delete(id: number){
-        const companyExists = await Company.query().findById(id)
+        const company = await Company.query().insert({
+            name,
+            cnpj,
+        });
 
-        if (!companyExists){
-            throw new Error('Empresa não encontrada.')
+        return company;
+    }
+
+    static async getCompanyWithContracts(user: any) {
+        if (
+            user.role === "admin" ||
+            user.role === "manager"
+        ) {
+            return await Company.query()
+                .withGraphFetched("contracts");
         }
 
-        await Company.query().where('id', id).delete()
+        const userCompanies =
+            await UserCompany.query()
+                .where("user_id", user.id);
 
-        return { message: 'Empresa deletada com sucesso.' }
+        const companyIds =
+            userCompanies.map(
+                (item) => item.company_id
+            );
+
+        if (companyIds.length === 0) {
+            return [];
+        }
+
+        return await Company.query()
+            .whereIn("companies.id", companyIds)
+            .withGraphFetched("contracts");
+    }
+
+    static async update(
+        id: number,
+        data: Partial<Company>
+    ) {
+        const company =
+            await Company.query().findById(id);
+
+        if (!company) {
+            throw new Error(
+                "Empresa não encontrada."
+            );
+        }
+
+        return await Company.query()
+            .patchAndFetchById(id, data);
+    }
+
+    static async delete(id: number) {
+        const company =
+            await Company.query().findById(id);
+
+        if (!company) {
+            throw new Error(
+                "Empresa não encontrada."
+            );
+        }
+
+        await Company.query().deleteById(id);
+
+        return {
+            message:
+                "Empresa deletada com sucesso",
+        };
     }
 }

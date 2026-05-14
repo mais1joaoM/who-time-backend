@@ -48,4 +48,29 @@ export class ContractController {
 
         ctx.body = contract;
     }
+
+    static async history(
+        ctx: Context
+        ) {
+
+        try {
+
+            const { id } = ctx.params
+
+            const history =
+            await ContractService.getHistory(
+                Number(id)
+            )
+
+            ctx.body = history
+
+        } catch (error: any) {
+
+            ctx.status = 400
+
+            ctx.body = {
+            message: error.message
+            }
+        }
+    }
 }
