@@ -41,7 +41,10 @@ export class TimeEntryController {
     }
 
     static async findAll(ctx: Context){
-        const timeEntries = await TimeEntryService.findAll();
+        const user = (ctx.state as any).user;
+
+        const timeEntries = await TimeEntryService.findAll(user);
+
         ctx.body = timeEntries;
     }
 

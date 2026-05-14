@@ -1,4 +1,5 @@
 import { Model } from "objection";
+import { Company } from "./Company";
 
 export class Contract extends Model {
     id!: number;
@@ -8,5 +9,16 @@ export class Contract extends Model {
     end_date?: string;
     hours_limit?: number;
 
-    static tableName = 'contracts';
+    static tableName = "contracts";
+
+    static relationMappings = {
+        company: {
+            relation: Model.BelongsToOneRelation,
+            modelClass: Company,
+            join: {
+                from: "contracts.company_id",
+                to: "companies.id",
+            },
+        },
+    };
 }

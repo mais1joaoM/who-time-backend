@@ -6,7 +6,8 @@ export class User extends Model {
     email!: string;
     password!: string;
     role!: 'admin' | 'manager' | 'user'
-    created_at?: string
+    created_at?: string;
+    deleted_at?: Date | null;
 
     static tableName = 'users';
 }

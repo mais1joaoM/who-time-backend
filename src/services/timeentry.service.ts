@@ -44,9 +44,21 @@ export class TimeEntryService {
         });
     }
 
-    static async findAll() {
+    static async findAll(user: any) {
 
-        return await TimeEntry.query();
+        if (
+            user.role === 'admin' ||
+            user.role === 'manager'
+        ){
+            return await TimeEntry.query();
+        }
+
+        return await TimeEntry.query().where(
+            'user_id',
+            user.id
+        )
+
+        
     }
 
     static async findById(id: number) {
