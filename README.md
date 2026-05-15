@@ -27,3 +27,9 @@ No arquivo package.json:
 } 
 
 
+*** PARA EXECUTAR AS MIGRATIONS ***
+
+npx knex migrate:latest --knexfile knexfile.ts
+
+
+
